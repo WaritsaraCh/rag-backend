@@ -1,0 +1,14 @@
+flask
+flask-cors
+psycopg2-binary
+python-dotenv
+sentence-transformers
+ollama
+langchain
+langchain-community
+pymupdf
+Pillow
+shortuuid
+pythainlp
+torch
+numpy
