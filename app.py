@@ -44,6 +44,9 @@ def chat():
 
     docs = retrieve_docs(user_message)
     print(f"Retrieved documents: {len(docs)}")
+    
+    for doc in docs:
+        print(f"  chunk_id: {doc['chunk_id']}, similarity: {doc['similarity']}")
 
     # Extract chunk IDs from retrieved documents
     relevant_chunk_ids = [doc['chunk_id'] for doc in docs if doc['chunk_id'] is not None]

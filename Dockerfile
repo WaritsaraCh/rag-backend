@@ -1,5 +1,5 @@
 # Use a slim Python base image
-FROM python:3.10
+FROM python:3.10.0
 
 # Set workdir
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
-    pkg-config \
+    pkg-config \ 
     poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 

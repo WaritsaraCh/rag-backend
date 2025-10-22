@@ -13,7 +13,7 @@ import torch
 # ── Setup ─────────────────────────────────────────
 load_dotenv()
 pool = SimpleConnectionPool(
-    1, 20,  # Increased from 10 to 20 connections
+    1, 20,
     host=os.getenv("DB_HOST"),
     database=os.getenv("DB_NAME"),
     user=os.getenv("DB_USER"),
@@ -175,7 +175,7 @@ def add_document_with_chunks(title, content, source_type, source_url, metadata):
 def retrieve_docs(query_text=None, query_embedding=None, limit=5, similarity_threshold=0.6):
     """Retrieve similar document chunks using pgvector search function"""
     if query_embedding is None and query_text:
-        # ใช้ฟังก์ชัน _embedder ที่คุณมีอยู่เพื่อสร้าง embedding (เช่น OpenAI embedding)
+       
         query_embedding = _embedder.encode(query_text)
         # print(f"Generated embedding: {query_embedding}")
 
@@ -204,18 +204,20 @@ def retrieve_docs(query_text=None, query_embedding=None, limit=5, similarity_thr
         release_conn(conn)
 
 def get_recent_messages(session_id, limit=3):
-    
-    with get_conn() as conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
-        sql = '''
-            SELECT role, content, relevant_chunk_ids FROM messages
-            WHERE conversation_id = %s
-            ORDER BY id DESC
-            LIMIT %s
-        '''
-        cur.execute(sql, (session_id, limit))
-        result = cur.fetchall()
-       
-        # Reverse the result to have the oldest message first
-        result.reverse()
-        
-    return result
+    conn = get_conn()
+    try:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            sql = '''
+                SELECT role, content, relevant_chunk_ids FROM messages
+                WHERE conversation_id = %s
+                ORDER BY id DESC
+                LIMIT %s
+            '''
+            cur.execute(sql, (session_id, limit))
+            result = cur.fetchall()
+
+            # Reverse the result to have the oldest message first
+            result.reverse()
+            return result
+    finally:
+        release_conn(conn)

@@ -12,3 +12,5 @@ shortuuid
 pythainlp
 torch
 numpy
+requests
+beautifulsoup4
