@@ -51,7 +51,7 @@ CREATE TABLE messages (
 CREATE INDEX idx_chunk_embedding 
 ON document_chunks 
 USING hnsw (embedding vector_cosine_ops)
-WITH (m = 16, ef_construction = 64);
+WITH (m = 8, ef_construction = 32);
 
 -- Regular indexes
 CREATE INDEX idx_chunk_document ON document_chunks(document_id);
