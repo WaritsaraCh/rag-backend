@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   db:
-    image: pgvector/pgvector:pg182
+    image: pgvector/pgvector:pg18
     environment:
       POSTGRES_DB: ragdb
       POSTGRES_USER: raguser

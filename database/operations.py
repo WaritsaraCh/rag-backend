@@ -1,24 +1,33 @@
-import os
 import time
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from psycopg2.pool import SimpleConnectionPool
 from psycopg2.extensions import AsIs
-from dotenv import load_dotenv
+import shortuuid
 from sentence_transformers import SentenceTransformer
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import json
 import torch
+import numpy as np
+from config.settings import get_config
 
 # ── Setup ─────────────────────────────────────────
-load_dotenv()
+config = get_config()
+
+# Database configuration
+DB_CONFIG = {
+    'host': config.DB_HOST,
+    'port': config.DB_PORT,
+    'database': config.DB_NAME,
+    'user': config.DB_USER,
+    'password': config.DB_PASSWORD
+}
+
+# Connection pool
 pool = SimpleConnectionPool(
-    1, 20,
-    host=os.getenv("DB_HOST"),
-    database=os.getenv("DB_NAME"),
-    user=os.getenv("DB_USER"),
-    password=os.getenv("DB_PASSWORD"),
-    port=os.getenv("DB_PORT")
+    config.DB_POOL_MIN,
+    config.DB_POOL_MAX,
+    **DB_CONFIG
 )
 
 _embedder = SentenceTransformer("BAAI/bge-m3")
@@ -172,7 +181,7 @@ def add_document_with_chunks(title, content, source_type, source_url, metadata):
     finally:
         release_conn(conn)
 
-def retrieve_docs(query_text=None, query_embedding=None, limit=5, similarity_threshold=0.6):
+def retrieve_docs(query_text=None, query_embedding=None, limit=5, similarity_threshold=0.5):
     """Retrieve similar document chunks using pgvector search function"""
     if query_embedding is None and query_text:
        

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "Q1",
+    "question": "What is a database index?",
+    "reference_answer": "A database index is a data structure that improves the speed of data retrieval by allowing quick lookups of rows based on indexed columns.",
+    "use_retrieval": false
+  },
+  {
+    "id": "Q2",
+    "question": "Explain what a GPU is used for in machine learning.",
+    "reference_answer": "A GPU accelerates machine learning by parallelizing numeric operations, particularly matrix and tensor computations used in training and inference.",
+    "use_retrieval": false
+  },
+  {
+    "id": "Q3",
+    "question": "Summarize benefits of regular exercise.",
+    "reference_answer": "Regular exercise improves cardiovascular health, strengthens muscles, enhances mood, and helps weight management.",
+    "use_retrieval": false
+  }
+]
